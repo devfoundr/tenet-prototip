@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TENET — прототип сайта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f0ea; --bg2:#ebe2d9; --card:#ffffff; --ink:#1d1a18; --ink2:#4a423c; --muted:#6b5f56;
+  --line:#e2d8ce; --accent:#7a2f3a; --accent-soft:#f3dfe1; --ph:#d9c8ba; --dark:#1d1a18; --dark-line:#3a3430;
+  --serif:'Cormorant Garamond',Georgia,serif; --sans:Manrope,system-ui,-apple-system,sans-serif;
+  --pad:80px; --r:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+h1,h2,h3{margin:0;font-family:var(--serif);font-weight:500;line-height:1}
+p{margin:0}
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--pad)}
+.section{padding:96px 0}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#7a6a5e}
+.h2{font-size:64px}
+.lead{font-size:18px;color:var(--ink2);max-width:520px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 30px;border-radius:999px;font-weight:600;font-size:16px;border:1px solid transparent;cursor:pointer;font-family:inherit;transition:.2s}
+.btn-accent{background:var(--accent);color:#fff}.btn-accent:hover{background:#5f232d}
+.btn-line{border-color:var(--ink);color:var(--ink)}.btn-line:hover{background:var(--ink);color:#fff}
+.btn-light{background:var(--bg);color:var(--ink)}
+.btn-sm{min-height:44px;padding:0 20px;font-size:14px}
+.ph{background:var(--ph);position:relative;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph[data-label]::after{content:attr(data-label);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;color:#6b5a4d;font-size:14px;font-weight:600;z-index:0}
+.ph img{position:relative;z-index:1}
+.price{font-family:var(--serif);font-size:36px;font-weight:600}
+
+/* header */
+.header{position:sticky;top:0;z-index:50;background:rgba(245,240,234,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.header .wrap{height:84px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-family:var(--serif);font-size:32px;font-weight:600;letter-spacing:6px}
+.nav{display:flex;align-items:center;gap:28px;font-size:15px;font-weight:500;white-space:nowrap}
+.nav a{padding:8px 0}
+.nav a:hover,.nav a.active{color:var(--accent)}
+.nav a.active{font-weight:700}
+.h-right{display:flex;align-items:center;gap:20px}
+.h-phone{font-weight:600;font-size:15px;white-space:nowrap}
+.icon-btn{width:44px;height:44px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--ink);background:transparent;cursor:pointer}
+.icon-btn.dark{background:var(--ink);border-color:var(--ink)}
+.header .burger,.header .h-call{display:none}
+.mnav{display:none;position:fixed;inset:64px 0 0 0;background:var(--bg);z-index:49;padding:24px 16px;flex-direction:column;gap:4px}
+.mnav.open{display:flex}
+.mnav a{font-family:var(--serif);font-size:32px;font-weight:600;padding:10px 0;border-bottom:1px solid var(--line)}
+.mnav .btn{margin-top:20px;font-family:var(--sans)}
+
+/* hero */
+.hero .wrap{display:flex;gap:64px;padding-top:64px;padding-bottom:96px;align-items:stretch}
+.hero-text{flex:1;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.hero h1{font-size:88px;line-height:.98}
+.hero h1 em{color:var(--accent)}
+.hero-img{width:540px;flex-shrink:0;height:660px;border-radius:270px 270px var(--r) var(--r)}
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.stats{display:flex;gap:48px;padding-top:20px;border-top:1px solid var(--line)}
+.stat b{display:block;font-family:var(--serif);font-size:40px;font-weight:600;line-height:1.1}
+.stat span{font-size:14px;color:var(--muted)}
+
+/* services */
+.bg-white{background:var(--card)}
+.bg-sand{background:var(--bg2)}
+.bg-dark{background:var(--dark);color:#f5f0ea}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:48px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.svc{display:flex;flex-direction:column;gap:18px;padding:24px;background:var(--bg);border-radius:var(--r);transition:.2s}
+.svc:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(29,26,24,.08)}
+.svc .ph{height:300px;border-radius:16px}
+.svc-top{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.svc h3{font-size:36px;font-weight:600}
+.svc .from{font-weight:600;white-space:nowrap}
+.svc p{color:var(--ink2)}
+.more{font-weight:600;color:var(--accent);font-size:15px}
+
+/* offers */
+.offer{display:flex;flex-direction:column;gap:16px;padding:36px;background:var(--card);border-radius:var(--r)}
+.offer.dark{background:var(--dark);color:#f5f0ea}
+.offer.dark .eyebrow{color:#cdb8a8}.offer.dark p{color:#d8ccc2}
+.offer h3{font-size:38px;font-weight:600;line-height:1.05}
+.offer p{color:var(--ink2);flex-grow:1}
+.offer-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--line)}
+.offer.dark .offer-foot{border-color:var(--dark-line)}
+.old{color:var(--muted);text-decoration:line-through;font-size:15px;margin-left:8px}
+
+/* why */
+.why .wrap{display:flex;gap:80px}
+.why h2{width:420px;flex-shrink:0}
+.why-grid{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 48px}
+.why-item{display:flex;flex-direction:column;gap:10px}
+.why-item h3{font-family:var(--sans);font-size:20px;font-weight:700;line-height:1.3}
+.why-item p{color:var(--ink2)}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:260px;gap:16px}
+.gallery .ph{border-radius:var(--r)}
+.gallery .big{grid-column:span 2;grid-row:span 2}
+
+/* team */
+.team{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
+.member{display:flex;flex-direction:column;gap:10px}
+.member .ph{height:300px;border-radius:20px;background:#e3d5c9}
+.member .ph img{object-position:center 20%}
+.member b{font-size:18px}
+.member span{font-size:14px;color:var(--muted)}
+
+/* form */
+.form-sec{background:var(--accent);color:#fff}
+.form-sec .wrap{display:flex;gap:80px;align-items:flex-start}
+.form-sec .lead{color:var(--accent-soft)}
+.form-text{flex:1;display:flex;flex-direction:column;gap:20px}
+.form{width:560px;display:flex;flex-direction:column;gap:16px}
+.form label{display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:600}
+.form input[type=text],.form input[type=tel],.form select{height:56px;padding:0 18px;border:0;border-radius:14px;font:inherit;font-weight:400;font-size:16px;color:var(--ink);background:#fff}
+.form .check{flex-direction:row;align-items:flex-start;gap:12px;font-size:13px;font-weight:400;line-height:1.45;color:var(--accent-soft)}
+.form .check input{width:18px;height:18px;margin:0;flex-shrink:0}
+.form .check a{color:#fff;text-decoration:underline}
+.form .btn{background:var(--ink);color:#fff;min-height:60px}
+.form .btn:hover{background:#000}
+.form-ok{display:none;padding:28px;border-radius:18px;background:rgba(255,255,255,.12);font-size:18px}
+
+/* footer */
+.footer{background:var(--dark);color:#d8ccc2;padding:80px 0 40px}
+.f-top{display:flex;justify-content:space-between;gap:48px;flex-wrap:wrap}
+.f-col{display:flex;flex-direction:column;gap:8px}
+.f-col .eyebrow{color:#9a8b80}
+.f-col .tel{font-size:22px;font-weight:700;color:#fff}
+.f-links{display:flex;gap:12px}
+.f-links a{padding:12px 20px;border:1px solid #4a423c;border-radius:999px;font-size:14px;color:#fff}
+.map{width:380px;height:200px;border-radius:20px;background:#2c2825;display:flex;align-items:center;justify-content:center;color:#9a8b80;font-size:14px}
+.f-bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:48px;padding-top:24px;border-top:1px solid var(--dark-line);font-size:13px;color:#9a8b80}
+
+/* service page */
+.crumbs{font-size:14px;color:var(--muted)}
+.crumbs a:hover{color:var(--accent)}
+.svc-hero h1{font-size:80px}
+.svc-hero .hero-img{height:600px;border-radius:var(--r)}
+.facts{display:flex;gap:40px}
+.facts span{font-size:14px;color:var(--muted)}
+.facts b{display:block;font-family:var(--serif);font-size:44px;font-weight:600;line-height:1.1}
+.split{display:flex;gap:80px}
+.split > h2,.split > .side{width:400px;flex-shrink:0}
+.side{display:flex;flex-direction:column;gap:16px}
+.plist{flex:1}
+.prow{display:flex;gap:24px;align-items:center;padding:26px 0;border-bottom:1px solid var(--line)}
+.prow .t{flex:1}
+.prow .t b{font-size:22px;display:block}
+.prow .t span{font-size:15px;color:var(--muted)}
+.prow .price{font-size:34px;white-space:nowrap}
+.step{display:flex;flex-direction:column;gap:12px;padding:32px;background:var(--card);border-radius:var(--r)}
+.step .n{font-family:var(--serif);font-size:48px;font-weight:600;color:var(--accent);line-height:1}
+.step b{font-size:20px}
+.step p{font-size:15px;color:var(--ink2)}
+.result .wrap{display:flex;gap:80px;align-items:center}
+.result .ph{width:520px;height:440px;flex-shrink:0;border-radius:var(--r);background:#3a3430}
+.result .ph::after{color:#9a8b80}
+.res-list{display:flex;flex-direction:column;gap:20px;margin-top:28px}
+.res-row{display:flex;gap:24px;padding-bottom:20px;border-bottom:1px solid var(--dark-line)}
+.res-row:last-child{border:0;padding:0}
+.res-row b{width:180px;flex-shrink:0;color:#cdb8a8;font-size:15px}
+.res-row span{font-size:17px;color:#d8ccc2}
+.note{font-size:13px;color:#9a8b80;margin-top:20px}
+details{border-bottom:1px solid var(--line);padding:22px 0}
+summary{font-size:20px;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-weight:400;font-size:26px;line-height:1;color:var(--accent)}
+details[open] summary::after{content:"–"}
+details p{margin-top:12px;color:var(--ink2)}
+
+
+/* home hero: wide photo so the whole TENET sign is visible */
+#page-home .hero .wrap{align-items:center}
+#page-home .hero .wrap{gap:56px}
+#page-home .hero-img{width:680px;height:auto;aspect-ratio:16/10;border-radius:32px}
+#page-home .hero-img img{object-position:center 25%}
+
+/* sticky mobile cta */
+.mcta{display:none}
+
+.page{display:none}
+.page.active{display:block}
+
+/* ---------- tablet ---------- */
+@media (max-width:1320px){
+  .h-phone{display:none}
+  #page-home .hero-img{width:520px}
+}
+@media (max-width:1180px){
+  :root{--pad:40px}
+  .nav{gap:18px;font-size:14px}
+  .h-phone{display:none}
+  .hero h1{font-size:68px}
+  .hero-img{width:420px;height:560px;border-radius:210px 210px var(--r) var(--r)}
+  .why .wrap,.split,.form-sec .wrap,.result .wrap{gap:48px}
+  .why h2,.split > h2,.split > .side{width:320px}
+  .team{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .form{width:460px}
+  .map{width:100%}
+}
+@media (max-width:960px){
+  .nav,.h-right .btn{display:none}
+  .header .burger,.header .h-call{display:inline-flex}
+  .grid3{grid-template-columns:1fr}
+  .hero .wrap,.why .wrap,.split,.form-sec .wrap,.result .wrap{flex-direction:column}
+  .hero-img{width:100%;height:520px}
+  #page-home .hero-img{width:100%;height:auto;aspect-ratio:16/10}
+  .why h2,.split > h2,.split > .side,.form{width:100%}
+  .result .ph{width:100%}
+}
+
+/* ---------- phone ---------- */
+@media (max-width:640px){
+  :root{--pad:16px;--r:20px}
+  body{font-size:15px;padding-bottom:76px}
+  .section{padding:56px 0}
+  .header .wrap{height:64px}
+  .logo{font-size:26px;letter-spacing:4px}
+  .h2{font-size:42px}
+  .sec-head{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:28px}
+  .lead{font-size:16px}
+  .hero .wrap{padding-top:28px;padding-bottom:56px;gap:24px}
+  .hero-text{gap:20px}
+  .hero h1,.svc-hero h1{font-size:48px}
+  .hero-img{height:380px;border-radius:190px 190px var(--r) var(--r);order:-1}
+  .svc-hero .hero-img{height:300px;border-radius:var(--r)}
+  #page-home .hero-img{height:auto;aspect-ratio:16/10;border-radius:var(--r)}
+  .btns{flex-direction:column}.btns .btn{width:100%}
+  .stats{gap:20px;justify-content:space-between}
+  .stat b{font-size:30px}.stat span{font-size:12px}
+  .grid2{grid-template-columns:1fr;gap:12px}
+  .svc{flex-direction:row;align-items:center;gap:14px;padding:12px}
+  .svc .ph{width:96px;height:96px;flex-shrink:0;border-radius:14px}
+  .svc .ph::after{display:none}
+  .svc-body{flex:1;display:flex;flex-direction:column;gap:4px}
+  .svc-top{flex-direction:column;gap:4px}
+  .svc h3{font-size:25px;line-height:1.05}
+  .svc .from{font-size:14px;color:var(--muted);font-weight:500}
+  .svc p,.svc .more{display:none}
+  .svc::after{content:"→";color:var(--accent);font-size:20px;padding-right:6px}
+  .offer{padding:24px}
+  .offer h3{font-size:32px}
+  .price{font-size:30px}
+  .why-grid{grid-template-columns:1fr;gap:24px}
+  .why-item svg{width:30px;height:30px}
+  .gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 -16px;padding:0 16px;grid-auto-rows:auto;scrollbar-width:none}
+  .gallery::-webkit-scrollbar{display:none}
+  .gallery .ph,.gallery .big{flex:0 0 82%;height:300px;scroll-snap-align:center}
+  .team{display:flex;overflow-x:auto;gap:12px;margin:0 -16px;padding:0 16px;scrollbar-width:none}
+  .team::-webkit-scrollbar{display:none}
+  .member{flex:0 0 160px}
+  .member .ph{height:200px}
+  .member b{font-size:15px}.member span{font-size:13px}
+  .form input[type=text],.form input[type=tel],.form select{height:54px}
+  .footer{padding:48px 0 32px}
+  .f-top{flex-direction:column;gap:28px}
+  .map{height:180px}
+  .f-bottom{flex-direction:column;gap:8px;margin-top:32px}
+  .facts{gap:28px}.facts b{font-size:34px}
+  .prow{flex-wrap:wrap;gap:8px 16px;padding:20px 0}
+  .prow .t{flex:1 1 100%}
+  .prow .t b{font-size:19px}
+  .prow .price{font-size:28px;flex:1}
+  .grid4{grid-template-columns:1fr;gap:12px}
+  .step{padding:22px;flex-direction:row;flex-wrap:wrap;gap:6px 16px;align-items:baseline}
+  .step .n{font-size:34px}
+  .step p{flex:1 1 100%}
+  .result .ph{height:300px}
+  .res-row{flex-direction:column;gap:4px}
+  .res-row b{width:auto}
+  summary{font-size:17px}
+  .mcta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:8px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(245,240,234,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+  .mcta .btn{flex:1;min-height:50px;font-size:15px;padding:0 12px}
+  .mcta .wa{flex:0 0 50px;padding:0;background:#fff;border-color:var(--line)}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <a href="#/" class="logo">TENET</a>
+    <nav class="nav">
+      <a href="#/massage" data-link="massage">Массаж</a>
+      <a href="#/">Коррекция фигуры</a>
+      <a href="#/">Лазерная эпиляция</a>
+      <a href="#/">Уход за лицом</a>
+      <a href="#/#offers">Цены</a>
+      <a href="#/#contacts">Контакты</a>
+    </nav>
+    <div class="h-right">
+      <a class="h-phone" href="tel:+79015982995">+7 (901) 598-29-95</a>
+      <a class="btn btn-accent btn-sm" href="#form" data-scroll="form">Записаться</a>
+      <a class="icon-btn h-call" href="tel:+79015982995" aria-label="Позвонить">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d1a18" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+      </a>
+      <button class="icon-btn dark burger" type="button" aria-label="Меню" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16"/><path d="M4 16h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="mnav" aria-label="Мобильное меню">
+  <a href="#/massage">Массаж</a>
+  <a href="#/">Коррекция фигуры</a>
+  <a href="#/">Лазерная эпиляция</a>
+  <a href="#/">Уход за лицом</a>
+  <a href="#/#offers">Цены</a>
+  <a href="#/#contacts">Контакты</a>
+  <a class="btn btn-accent" href="#form" data-scroll="form">Записаться</a>
+</nav>
+
+<main>
+<!-- ================= HOME ================= -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <div class="eyebrow">Студия эстетики тела · Нижний Новгород, Варварская 7</div>
+        <h1>Тело, которым хочется <em>жить</em></h1>
+        <p class="lead" style="font-size:20px">Массаж, аппаратная коррекция фигуры, лазерная эпиляция и уход за лицом. Замеры на каждой процедуре, чтобы вы видели результат в сантиметрах.</p>
+        <div class="btns">
+          <a class="btn btn-accent" href="#form" data-scroll="form">Записаться на процедуру</a>
+          <a class="btn btn-line" href="https://t.me/+79015982995" target="_blank" rel="noopener">Написать в Telegram</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>1000+</b><span>гостей с 2022 года</span></div>
+          <div class="stat"><b>2</b><span>студии: Нижний и Воронеж</span></div>
+          <div class="stat"><b>8+</b><span>лет опыта мастеров</span></div>
+        </div>
+      </div>
+      <div class="ph hero-img" data-label="[ФОТО: процедура]"><img src="https://static.tildacdn.com/tild3638-6161-4164-b231-383635373337/Airbrush-Image-Enhan.jpg" alt="Массаж в студии TENET" onerror="this.remove()"></div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="h2">Услуги</h2>
+        <p class="lead">У каждого направления своя страница с ценами, этапами процедуры и записью.</p>
+      </div>
+      <div class="grid2">
+        <a class="svc" href="#/massage">
+          <div class="ph" data-label="[ФОТО: массаж]"><img src="https://static.tildacdn.com/tild3831-3333-4266-b834-363633393431/6227efabc7c0728ad85d.jpg" alt="Массаж" onerror="this.remove()"></div>
+          <div class="svc-body">
+            <div class="svc-top"><h3>Массаж</h3><div class="from">от 1 800 ₽</div></div>
+            <p>Антицеллюлитный, лимфодренажный, «Архитектура тела» с обертыванием V-SHOCK.</p>
+            <div class="more">Подробнее и цены →</div>
+          </div>
+        </a>
+        <a class="svc" href="#/">
+          <div class="ph" data-label="[ФОТО: аппарат]"><img src="https://static.tildacdn.com/tild3130-6161-4536-a335-346662353561/8c841356731398f8f2fc.jpg" alt="Аппаратная коррекция фигуры" onerror="this.remove()"></div>
+          <div class="svc-body">
+            <div class="svc-top"><h3>Аппаратная коррекция фигуры</h3><div class="from">от 1 500 ₽</div></div>
+            <p>Вакуумно-роликовый массаж LPG: аппарат прорабатывает кожу в складке, выводит лишнюю жидкость и выравнивает рельеф. Минус объемы без боли.</p>
+            <div class="more">Подробнее и цены →</div>
+          </div>
+        </a>
+        <a class="svc" href="#/">
+          <div class="ph" data-label="[ФОТО: эпиляция]"><img src="https://static.tildacdn.com/tild3937-3234-4662-a538-656335326662/Airbrush-Image-Enhan.jpg" alt="Лазерная эпиляция" onerror="this.remove()"></div>
+          <div class="svc-body">
+            <div class="svc-top"><h3>Лазерная эпиляция</h3><div class="from">от 490 ₽</div></div>
+            <p>Диодный лазер Magic One, работа по сбритому волосу. Комплексы для первого визита.</p>
+            <div class="more">Подробнее и цены →</div>
+          </div>
+        </a>
+        <a class="svc" href="#/">
+          <div class="ph" data-label="[ФОТО: уход за лицом]"><img src="https://static.tildacdn.com/tild3136-3363-4261-b731-646137373132/3a562ac97c74955c0847.jpg" alt="Уход за лицом" onerror="this.remove()"></div>
+          <div class="svc-body">
+            <div class="svc-top"><h3>Уход за лицом</h3><div class="from">от 1 900 ₽</div></div>
+            <p>«Архитектура лица»: скульптурный и буккальный массаж, микротоки, уходовые программы.</p>
+            <div class="more">Подробнее и цены →</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="offers">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2">Популярное в TENET</h2></div>
+      <div class="grid3">
+        <div class="offer dark">
+          <div class="eyebrow">Тело · 90–120 мин</div>
+          <h3>Архитектура тела</h3>
+          <p>Антицеллюлитный лимфодренажный массаж и бандажное обертывание V-SHOCK. Замеры тела на каждом визите.</p>
+          <div class="offer-foot"><div class="price">3 000 ₽</div><a class="btn btn-light btn-sm" href="#form" data-scroll="form" data-service="Массаж">Записаться</a></div>
+        </div>
+        <div class="offer">
+          <div class="eyebrow">Лицо · 60–75 мин</div>
+          <h3>Архитектура лица</h3>
+          <p>Скульптурный и буккальный массаж: снимает отечность, подчеркивает скулы и овал лица.</p>
+          <div class="offer-foot"><div class="price">3 000 ₽</div><a class="btn btn-accent btn-sm" href="#form" data-scroll="form" data-service="Уход за лицом">Записаться</a></div>
+        </div>
+        <div class="offer">
+          <div class="eyebrow">Эпиляция · первый визит</div>
+          <h3>Всё тело</h3>
+          <p>Бикини, ноги, подмышки, малая зона. Комплекс для тех, кто приходит к нам впервые.</p>
+          <div class="offer-foot"><div><span class="price">3 100 ₽</span><span class="old">5 900</span></div><a class="btn btn-accent btn-sm" href="#form" data-scroll="form" data-service="Лазерная эпиляция">Записаться</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-sand why">
+    <div class="wrap">
+      <h2 class="h2">Почему к нам возвращаются</h2>
+      <div class="why-grid">
+        <div class="why-item">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1d1a18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 16l4-8 4 5 4-9"/></svg>
+          <h3>Результат в сантиметрах</h3><p>Замеряем объемы на каждой процедуре и заносим в вашу карту.</p>
+        </div>
+        <div class="why-item">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1d1a18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+          <h3>Индивидуальная программа</h3><p>Мастер подбирает курс под вашу задачу, а не продает всё подряд.</p>
+        </div>
+        <div class="why-item">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1d1a18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg>
+          <h3>Клубная карта</h3><p>Постоянные скидки для гостей после первого визита.</p>
+        </div>
+        <div class="why-item">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1d1a18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 4v5c0 4.5-3 8-7 9-4-1-7-4.5-7-9V7z"/></svg>
+          <h3>Профессиональная косметика</h3><p>Работаем на профессиональных средствах, в том числе V-SHOCK.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2">Студия</h2><p class="lead">Нижний Новгород, Варварская 7</p></div>
+      <div class="gallery">
+        <div class="ph big" data-label="[ФОТО 1]"><img src="https://static.tildacdn.com/tild3034-3861-4061-b830-666230313838/IMG_1443_1.jpg" alt="Интерьер студии" loading="lazy" onerror="this.remove()"></div>
+        <div class="ph" data-label="[ФОТО 2]"><img src="https://static.tildacdn.com/tild3731-3763-4236-b364-336130376636/WhatsApp_Image_2022-.jpg" alt="Интерьер студии" loading="lazy" onerror="this.remove()"></div>
+        <div class="ph" data-label="[ФОТО 3]"><img src="https://static.tildacdn.com/tild3839-3764-4435-a664-396538653662/WhatsApp_Image_2022-.jpg" alt="Интерьер студии" loading="lazy" onerror="this.remove()"></div>
+        <div class="ph" data-label="[ФОТО 4]"><img src="https://static.tildacdn.com/tild3566-3434-4734-a339-633539313437/WhatsApp_Image_2022-.jpg" alt="Интерьер студии" loading="lazy" onerror="this.remove()"></div>
+        <div class="ph" data-label="[ФОТО 5]"><img src="https://static.tildacdn.com/tild6466-6137-4339-b637-323166343532/WhatsApp_Image_2022-.jpg" alt="Интерьер студии" loading="lazy" onerror="this.remove()"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2">Команда</h2></div>
+      <div class="team">
+        <div class="member"><div class="ph" data-label="[ФОТО]"><img src="https://static.tildacdn.com/tild3231-6632-4138-b462-323038613861/10ec5ae630f5660_2025.png" alt="Анастасия Белякова" loading="lazy" onerror="this.remove()"></div><b>Анастасия Белякова</b><span>Лазерная эпиляция, уход за лицом</span></div>
+        <div class="member"><div class="ph" data-label="[ФОТО]"><img src="https://static.tildacdn.com/tild6430-3238-4535-a263-326464346138/6873e47f850be10_2025.png" alt="Валерия Маслова" loading="lazy" onerror="this.remove()"></div><b>Валерия Маслова</b><span>Лазерная эпиляция, уход за лицом</span></div>
+        <div class="member"><div class="ph" data-label="[ФОТО]"><img src="https://static.tildacdn.com/tild6632-6331-4232-a337-663436383464/IMG_8825.JPG" alt="Дарья Зайцева" loading="lazy" onerror="this.remove()"></div><b>Дарья Зайцева</b><span>Лазерная эпиляция, уход за лицом</span></div>
+        <div class="member"><div class="ph" data-label="[ФОТО]"><img src="https://static.tildacdn.com/tild3434-3730-4633-b236-386165393430/IMG_8823.JPG" alt="Алина Жмеринская" loading="lazy" onerror="this.remove()"></div><b>Алина Жмеринская</b><span>Лазерная эпиляция, уход за лицом</span></div>
+        <div class="member"><div class="ph" data-label="[ФОТО]"><img src="https://static.tildacdn.com/tild6363-3932-4136-a638-363434393130/2025-10-04_19-40-50.png" alt="Антонина Алексеенко" loading="lazy" onerror="this.remove()"></div><b>Антонина Алексеенко</b><span>Мастер массажа</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= MASSAGE ================= -->
+<div class="page" id="page-massage">
+  <section class="hero svc-hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <div class="crumbs"><a href="#/">Главная</a> / Массаж</div>
+        <h1>Массаж в Нижнем Новгороде</h1>
+        <p class="lead" style="font-size:20px">Антицеллюлитный и лимфодренажный массаж, «Архитектура тела» с обертыванием V-SHOCK. Замеряем объемы на каждой процедуре.</p>
+        <div class="facts">
+          <div><span>Стоимость</span><b>от 1 800 ₽</b></div>
+          <div><span>Длительность</span><b>60–120 мин</b></div>
+        </div>
+        <div class="btns">
+          <a class="btn btn-accent" href="#form" data-scroll="form" data-service="Массаж">Записаться на массаж</a>
+          <a class="btn btn-line" href="https://t.me/+79015982995" target="_blank" rel="noopener">Спросить в Telegram</a>
+        </div>
+      </div>
+      <div class="ph hero-img" data-label="[ФОТО: массаж в кабинете]"><img src="https://static.tildacdn.com/tild3831-3333-4266-b834-363633393431/6227efabc7c0728ad85d.jpg" alt="Массаж в TENET" onerror="this.remove()"></div>
+    </div>
+  </section>
+
+  <section class="section bg-white">
+    <div class="wrap split">
+      <div class="side">
+        <h2 class="h2">Виды массажа и цены</h2>
+        <p class="lead" style="font-size:16px">Курс выгоднее разовых визитов, мастер подскажет, сколько процедур нужно под вашу задачу.</p>
+      </div>
+      <div class="plist">
+        <div class="prow"><div class="t"><b>Архитектура тела</b><span>Лимфодренажный массаж + обертывание V-SHOCK · 90–120 мин</span></div><div class="price">3 000 ₽</div><a class="btn btn-line btn-sm" href="#form" data-scroll="form" data-service="Массаж">Записаться</a></div>
+        <div class="prow"><div class="t"><b>Антицеллюлитный массаж</b><span>Бедра, ягодицы, живот · 60 мин</span></div><div class="price">2 000 ₽</div><a class="btn btn-line btn-sm" href="#form" data-scroll="form" data-service="Массаж">Записаться</a></div>
+        <div class="prow"><div class="t"><b>Лимфодренажный массаж</b><span>Все тело · 60 мин</span></div><div class="price">1 800 ₽</div><a class="btn btn-line btn-sm" href="#form" data-scroll="form" data-service="Массаж">Записаться</a></div>
+        <div class="prow"><div class="t"><b>Архитектура лица</b><span>Скульптурный + буккальный массаж · 60–75 мин</span></div><div class="price">3 000 ₽</div><a class="btn btn-line btn-sm" href="#form" data-scroll="form" data-service="Уход за лицом">Записаться</a></div>
+        <div class="prow"><div class="t"><b>Курс 10 процедур</b><span>Любой вид массажа тела, 2 раза в неделю · выгода 10%</span></div><div class="price">16 200 ₽</div><a class="btn btn-line btn-sm" href="#form" data-scroll="form" data-service="Массаж">Записаться</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="h2">Как проходит «Архитектура тела»</h2></div>
+      <div class="grid4">
+        <div class="step"><div class="n">01</div><b>Замеры</b><p>Фиксируем объемы проблемных зон и заносим в карту.</p></div>
+        <div class="step"><div class="n">02</div><b>Массаж</b><p>Глубокая проработка зон, разогрев и подготовка тканей.</p></div>
+        <div class="step"><div class="n">03</div><b>Гели V-SHOCK</b><p>Пептидные гели без жжения и холода, ощущения приятные.</p></div>
+        <div class="step"><div class="n">04</div><b>Обертывание</b><p>Бандажное обертывание и повторные замеры после процедуры.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-dark result">
+    <div class="wrap">
+      <div class="ph" data-label="[ФОТО]"><img src="https://static.tildacdn.com/tild3130-6161-4536-a335-346662353561/8c841356731398f8f2fc.jpg" alt="Архитектура тела" loading="lazy" onerror="this.remove()"></div>
+      <div style="flex:1">
+        <h2 class="h2">Чего ожидать</h2>
+        <div class="res-list">
+          <div class="res-row"><b>После процедуры</b><span>Минус 1–3 см в проблемных зонах, легкость, уходит отечность.</span></div>
+          <div class="res-row"><b>Через 2–3 дня</b><span>Эффект держится, подходит для подготовки к событию.</span></div>
+          <div class="res-row"><b>После курса</b><span>10 процедур, 2 раза в неделю. Кожа упругая, силуэт ровнее, эффект 2–3 месяца.</span></div>
+        </div>
+        <p class="note">Результат индивидуален и зависит от образа жизни.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <h2 class="h2">Частые вопросы</h2>
+      <div class="plist">
+        <details open><summary>Больно ли делать антицеллюлитный массаж?</summary><p>Интенсивность подбираем под вас, мастер ориентируется на ощущения.</p></details>
+        <details><summary>Как подготовиться к процедуре?</summary><p>Специальной подготовки не нужно. Не ешьте плотно за 1,5–2 часа до процедуры и пейте больше воды в день массажа.</p></details>
+        <details><summary>Можно ли совмещать с аппаратной коррекцией?</summary><p>Да, это усиливает эффект. Мастер составит программу, где массаж и LPG чередуются через день.</p></details>
+        <details><summary>Есть ли ограничения?</summary><p>Перед первым визитом администратор уточнит самочувствие. Процедуры не проводят при беременности, воспалениях кожи, высокой температуре и варикозе в зоне массажа.</p></details>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= FORM (shared) ================= -->
+<section class="section form-sec" id="form">
+  <div class="wrap">
+    <div class="form-text">
+      <h2 class="h2" id="form-title">Запишитесь на процедуру</h2>
+      <p class="lead">Администратор перезвонит в течение 15 минут в рабочее время, подберет время и ответит на вопросы.</p>
+    </div>
+    <form class="form" id="lead-form" novalidate>
+      <label>Имя<input type="text" name="name" placeholder="Как к вам обращаться" autocomplete="given-name"></label>
+      <label>Телефон<input type="tel" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" required></label>
+      <label>Услуга
+        <select name="service" id="service">
+          <option>Массаж</option>
+          <option>Аппаратная коррекция фигуры</option>
+          <option>Лазерная эпиляция</option>
+          <option>Уход за лицом</option>
+          <option>Нужна консультация</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" checked required> <span>Согласна на обработку персональных данных по <a href="#">политике конфиденциальности</a></span></label>
+      <button class="btn" type="submit">Записаться</button>
+      <div class="form-ok" id="form-ok">Спасибо! Администратор перезвонит вам в ближайшее время.</div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="footer" id="contacts">
+  <div class="wrap">
+    <div class="f-top">
+      <div class="f-col" style="gap:16px">
+        <div class="logo" style="color:#fff">TENET</div>
+        <div class="f-links"><a href="https://t.me/+79015982995" target="_blank" rel="noopener">Telegram</a><a href="https://vk.com/tenet_nn" target="_blank" rel="noopener">ВКонтакте</a></div>
+      </div>
+      <div class="f-col"><div class="eyebrow">Нижний Новгород</div><a class="tel" href="tel:+79015982995">+7 (901) 598-29-95</a><div>Варварская 7</div><div>[ЧАСЫ РАБОТЫ]</div></div>
+      <div class="f-col"><div class="eyebrow">Воронеж</div><a class="tel" href="tel:+79950361260">+7 (995) 036-12-60</a><div>Фридриха Энгельса 64А</div><div>[ЧАСЫ РАБОТЫ]</div></div>
+      <div class="map">[КАРТА: Яндекс Карты]</div>
+    </div>
+    <div class="f-bottom">
+      <div>[ИП / ООО, ФИО или название, ИНН, ОГРН]</div>
+      <a href="#">Политика конфиденциальности</a>
+      <div>© 2026 TENET</div>
+    </div>
+  </div>
+</footer>
+
+<div class="mcta">
+  <a class="btn btn-accent" href="#form" data-scroll="form">Записаться</a>
+  <a class="btn btn-line wa" href="https://t.me/+79015982995" target="_blank" rel="noopener" aria-label="Telegram">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1d1a18" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4L3 11l6 2.5L11.5 20l3-4.5L19 19z"/><path d="M9 13.5L21 4"/></svg>
+  </a>
+  <a class="btn btn-line wa" href="tel:+79015982995" aria-label="Позвонить">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d1a18" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+  </a>
+</div>
+
+<script>
+(function(){
+  var pages = {home: document.getElementById('page-home'), massage: document.getElementById('page-massage')};
+  var mnav = document.querySelector('.mnav'), burger = document.querySelector('.burger');
+  var formTitle = document.getElementById('form-title'), service = document.getElementById('service');
+
+  function route(){
+    var h = location.hash || '#/';
+    if (h === '#form' || h === '#contacts' || h === '#offers') return; // in-page anchors handled below
+    var m = h.match(/^#\/([a-z]*)(?:#(.+))?$/) || [];
+    var name = pages[m[1]] ? m[1] : 'home';
+    Object.keys(pages).forEach(function(k){ pages[k].classList.toggle('active', k === name); });
+    document.querySelectorAll('.nav a').forEach(function(a){ a.classList.toggle('active', a.dataset.link === name); });
+    formTitle.textContent = name === 'massage' ? 'Записаться на массаж' : 'Запишитесь на процедуру';
+    if (name === 'massage') service.value = 'Массаж';
+    closeMenu();
+    if (m[2]) { var t = document.getElementById(m[2]); if (t) { t.scrollIntoView(); return; } }
+    window.scrollTo(0, 0);
+  }
+  function closeMenu(){ mnav.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+  burger.addEventListener('click', function(){
+    var open = mnav.classList.toggle('open'); burger.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('[data-scroll]');
+    if (!a) return;
+    e.preventDefault();
+    if (a.dataset.service) service.value = a.dataset.service;
+    closeMenu();
+    document.getElementById(a.dataset.scroll).scrollIntoView({behavior:'smooth'});
+  });
+  window.addEventListener('hashchange', route);
+  route();
+
+  // form demo
+  var form = document.getElementById('lead-form');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var phone = form.phone.value.replace(/\D/g,'');
+    if (phone.length < 10) { form.phone.focus(); form.phone.style.outline = '2px solid #1d1a18'; return; }
+    form.querySelectorAll('label, button').forEach(function(el){ el.style.display = 'none'; });
+    document.getElementById('form-ok').style.display = 'block';
+  });
+  // simple phone mask
+  form.phone.addEventListener('input', function(){
+    var d = this.value.replace(/\D/g,'').replace(/^8/,'7'); if (d && d[0] !== '7') d = '7' + d; d = d.slice(0,11);
+    var f = '+7'; if (d.length > 1) f += ' (' + d.slice(1,4); if (d.length >= 4) f += ') ' + d.slice(4,7);
+    if (d.length >= 7) f += '-' + d.slice(7,9); if (d.length >= 9) f += '-' + d.slice(9,11);
+    this.value = d ? f : ''; this.style.outline = '';
+  });
+})();
+</script>
+</body>
+</html>
